@@ -1,0 +1,64 @@
+Where's the smart account?
+
+Where's the validtor?
+
+Where's the executor? 
+
+Where's the Fallback handler?
+
+Where's the hooks?
+
+
+
+Session Key Notes:
+
+Where is it coming from?
+
+It's all coming from the UserOp.signature
+
+-> session key digest
+-> session key signature
+
+
+
+Then, session data is actually a mapping for the specific smart account for:
+-> the supplied digest
+-> the specific account
+
+_enabledSessionsData[sessionKeyDataDigest][smartAccount]
+
+Presumably, it will hold some information about the session. Let's see.
+
+It holds thr following in a the SessionData struct:
+-> validUntil
+-> validAfter
+-> the session validate module (presumably address of smart contract)
+-> sessionKeyData
+    -> What's this? ANSWER: it's related to "scoped access", but in byte format
+    struct ScopedAccess {
+        address sessionKeySigner;
+        address onlyToken;
+        uint256 maxAmount;
+    }
+
+
+We now pass the signature, the session data, and traditional "to, calldata, value".
+-> Did you sign off on it? Sig
+-> What did you sign off on? SessionData
+
+
+
+
+INSIGHT: Apparently, smart contracts can sign messages with ERC-1271???
+
+
+FINALLY, I FOUND AN IMPLEMENTATION:
+
+erc7579/src/MSABasic
+
+-> It has all of the functions in the IMSA.
+
+-> It also has a module manager and an execution helper
+
+
+
